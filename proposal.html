@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the room is the memory — proposal</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .doc { max-width: 720px; font: 16px/1.65 Georgia, 'Times New Roman', serif; }
+  .doc h1 { font: 700 22px/1.3 Georgia, serif; margin: 0 0 4px; }
+  .doc h2 { font: 700 16px/1.3 Georgia, serif; margin: 28px 0 6px; }
+  .doc .meta { color: #555; margin: 0 0 24px; }
+  .doc p { margin: 0 0 12px; }
+  .doc ul { padding-left: 20px; margin: 0 0 12px; }
+  .doc li { margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<nav><a href="./">the piece</a> · <a href="proposal.html">proposal</a></nav>
+<article class="doc">
+<h1>The Room Is the Memory</h1>
+<p class="meta">Final project proposal · FILMEDIA 6/306: Media and Mediums · Manasvini</p>
+
+<h2>What it is</h2>
+<p>I'm making a program that has no storage. My laptop turns a short piece of code into beeps and plays them out loud. A microphone across the room records the beeps and turns them back into code. The computer runs that code, then beeps it out again, over and over.</p>
+<p>The code is never saved anywhere. Between passes, the only copy is the sound travelling across the room. There is no error correction, so if someone talks, coughs, or the room echoes, some beeps get misheard and some letters in the code change. Those changes are permanent. After a few passes, "I am a program kept in the air" becomes "I am a program kkpt in the aiu." Eventually the code changes so much that it doesn't run anymore.</p>
+<p>It's a game of telephone played by machines, where the room is the one garbling the message.</p>
+
+<h2>Why I'm making it</h2>
+<p>We usually think of software and files as weightless, as if they live "in the cloud" and nowhere in particular. But every file is physically stored in something: a chip, a disk, a cable, a server. When a file gets corrupted or a photo gets worse every time it's re-sent, that's the physical medium showing through. I wanted to make that visible by choosing the most obvious and fragile storage possible, which is sound in a room, so you can hear and watch the medium change what it carries.</p>
+<p>This also has a real history. Some of the first computers, like EDSAC in 1949, stored their memory as pulses of sound travelling through tubes of mercury, and had to keep re-sending the pulses to remember anything. My project does the same thing with the air of a room.</p>
+
+<h2>How it connects to the course</h2>
+<ul>
+  <li><b>McLuhan, "The Medium is the Message."</b> McLuhan says the content of a medium is always another medium. Here the sound carries code, and the code carries a sentence. But what ends up deciding what the program says is the room, the medium itself, not the content I start with.</li>
+  <li><b>Kittler, "Gramophone."</b> Kittler argues that the phonograph doesn't just record meaningful sound; it records everything, noise included. My microphone works the same way. It can't tell my signal apart from a cough, so the room's noise gets written directly into the program.</li>
+  <li><b>Kittler, "Code."</b> Kittler treats code as a kind of writing with its own history. My project writes code on an unusual surface, air, and shows that what you write on changes what gets written.</li>
+  <li><b>Carey, "Technology and Ideology: The Case of the Telegraph."</b> Carey says the telegraph separated communication from transportation: messages no longer had to physically travel. My project goes the other way. The message has to physically cross the room, and it gets damaged on the way.</li>
+  <li><b>Ihde, <i>Technology and the Lifeworld</i>.</b> Ihde describes "background relations," technologies like lighting or heating that we stop noticing. The air and acoustics of a room are about as background as it gets. In this piece the room becomes the machine itself.</li>
+  <li><b>Manovich, "Principles of New Media."</b> Manovich says new media objects are numerical and exist in many versions (variability). Every pass here produces a new version of the program, but the versions are chosen by the room, not by a user.</li>
+</ul>
+
+<h2>Form</h2>
+<p>A web page built with my own code in JavaScript. It turns text into tones, plays them, listens with a microphone, decodes what it heard, and runs it. The page shows the code changing on each pass, what the program outputs, and a live picture of the sound the microphone hears. It has two modes: a real room (a speaker and a microphone placed a few metres apart) and a simulated room, so anyone can try it without a second device.</p>
+<p>The final project will be the working piece plus a short video of it running in a real room with people in it, since their voices are what rewrite the code.</p>
+
+<h2>Where it is now and what's next</h2>
+<p>The prototype works in the simulated room. In tests, the code survives unchanged at about 2 metres, drifts slowly at 3 metres, and breaks within a pass at 4 metres. Next I will:</p>
+<ul>
+  <li>test it in real rooms with a phone or USB microphone, and adjust distance and volume so the code changes slowly instead of breaking right away</li>
+  <li>decide what the starting program should say</li>
+  <li>film it running in a room with people</li>
+  <li>write the 1–2 page statement</li>
+</ul>
+</article>
+</body>
+</html>

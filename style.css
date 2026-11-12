@@ -1,0 +1,32 @@
+* { box-sizing: border-box; }
+body { margin: 0 auto; max-width: 980px; padding: 28px 24px 60px; background: #fff; color: #111; font: 14px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+h1 { font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+nav { margin-bottom: 22px; }
+a { color: #111; }
+.try { border-left: 3px solid #111; padding-left: 10px; }
+header p { margin: 0 0 22px; max-width: 760px; }
+fieldset { border: 1px solid #111; margin: 0 0 12px; padding: 8px 12px 10px; }
+legend { padding: 0 4px; }
+label { display: block; margin: 3px 0; }
+input[type=range] { vertical-align: middle; width: 200px; }
+select { font: inherit; }
+.hint { color: #666; margin: 4px 0 0; font-size: 12.5px; }
+textarea { width: 100%; font: inherit; border: 1px solid #999; padding: 6px; resize: vertical; }
+.buttons { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 26px; }
+button { font: inherit; background: #fff; border: 1px solid #111; padding: 4px 10px; cursor: pointer; }
+button:disabled { color: #aaa; border-color: #ccc; cursor: default; }
+button:not(:disabled):hover { background: #111; color: #fff; }
+.genline { display: flex; justify-content: space-between; border-bottom: 1px solid #111; padding-bottom: 4px; margin-bottom: 8px; }
+#state { color: #666; }
+pre { margin: 0 0 14px; white-space: pre-wrap; word-break: break-all; }
+.code { font-size: 20px; line-height: 1.45; min-height: 3em; }
+.code .m { background: #111; color: #fff; }
+.code .old { text-decoration: underline; text-decoration-color: #999; text-underline-offset: 4px; }
+.code .np { color: #999; }
+.out { min-height: 1.5em; color: #333; }
+.out.dead { color: #b00; }
+.outlabel { color: #666; font-size: 12px; margin-bottom: 4px; }
+canvas { width: 100%; display: block; background: #fff; border: 1px solid #111; margin-bottom: 22px; image-rendering: pixelated; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { text-align: left; border-bottom: 1px solid #ddd; padding: 3px 6px 3px 0; vertical-align: top; }
+td:nth-child(4) { word-break: break-all; }
