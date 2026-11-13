@@ -1,4 +1,4 @@
-# the room is the memory
+# Telephone
 
 A program with no storage. Between runs, its source code exists only as sound
 travelling through the air from a speaker to a microphone. Each pass, the

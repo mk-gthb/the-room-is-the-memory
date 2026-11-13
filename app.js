@@ -1,7 +1,7 @@
 import { P, encode, decode, simulateRoom, frameSeconds } from './modem.js';
 
 const $ = id => document.getElementById(id);
-const SEED = 'say("I am a program kept in the air of the room you are in now. Each time I pass through it, I am rewritten by it.")';
+const SEED = 'say("the medium is the message")';
 
 const S = {
   running: false, stopAfter: false, gen: 0,
@@ -16,7 +16,7 @@ const ascii = s => Uint8Array.from([...s].map(c => { const k = c.charCodeAt(0); 
 function seedInfo() {
   const n = ascii($('seed').value).length;
   P.symbolDur = +$('sym').value / 1000;
-  $('seedInfo').textContent = `${n} bytes · about ${frameSeconds(n).toFixed(1)} s per pass`;
+  $('seedInfo').textContent = `${n} characters · about ${frameSeconds(n).toFixed(1)} s per pass`;
 }
 for (const [id, fmt] of [['vol', v => v], ['dist', v => (+v).toFixed(1)], ['rt60', v => (+v).toFixed(2)], ['talk', v => v], ['sym', v => v]]) {
   const el = $(id), out = $(id + 'Val');
@@ -86,7 +86,7 @@ async function passThroughRoom(bytes) {
     await play(wave, false);
     await wait(700);
     const rec = concat(S.recBuf); S.recBuf = null;
-    setState('decoding what came back');
+    setState('decoding');
     await wait(20);
     return decode(rec, sr, 2.5);
   }
@@ -94,7 +94,7 @@ async function passThroughRoom(bytes) {
     distance: +$('dist').value, rt60: +$('rt60').value, talk: +$('talk').value, noise: 0.01, coughsPerMin: 4, seed: (Date.now() % 1e6) + S.gen });
   const peak = heard.reduce((m, v) => Math.max(m, Math.abs(v)), 1e-6);
   await play(heard.map(v => v / peak * 0.5), true);
-  setState('decoding what came back');
+  setState('decoding');
   await wait(20);
   return decode(heard, sr, 2.5);
 }
@@ -150,23 +150,23 @@ function addLog(entry) {
 // ---------- main loop ----------
 async function start() {
   try { await ensureAudio(); }
-  catch (e) { setState('no microphone: ' + e.message + ' — try the simulated room'); return; }
+  catch (e) { setState('no microphone (' + e.message + '). Try the simulated room.'); return; }
   if (!S.bytes) { S.bytes = ascii($('seed').value); S.gen = 0; S.prev = null; S.ever.clear(); renderCode(S.bytes, null); }
   S.running = true; S.stopAfter = false;
   $('startBtn').disabled = true; $('stopBtn').disabled = false; $('resetBtn').disabled = true; $('seed').disabled = true;
 
   while (S.running) {
-    $('gen').textContent = `generation ${S.gen} → ${S.gen + 1}`;
-    setState('in the air');
+    $('gen').textContent = `Pass ${S.gen + 1}`;
+    setState('playing');
     const sent = S.bytes;
     S.bytes = null;                                   // from here on, only the room has it
     const r = await passThroughRoom(sent);
 
     if (!r.ok) {
-      setState('the room did not give it back');
+      setState('lost');
       $('code').textContent = '';
       $('out').className = 'out dead';
-      $('out').textContent = `Lost during pass ${S.gen + 1} (${r.reason}). Nothing else held a copy.`;
+      $('out').textContent = `Couldn't decode pass ${S.gen + 1} (${r.reason}). The code is gone.`;
       addLog({ gen: S.gen + 1, lost: 'lost: ' + r.reason, t: new Date().toISOString() });
       break;
     }
@@ -177,36 +177,36 @@ async function start() {
     changed.forEach(i => S.ever.add(i));
     S.bytes = r.bytes;
 
-    $('gen').textContent = `generation ${S.gen}`;
+    $('gen').textContent = `Pass ${S.gen}`;
     renderCode(S.bytes, sent);
-    setState('running what it heard');
+    setState('running');
     const res = await runProgram(latin1(S.bytes));
     renderOut(res);
     addLog({ gen: S.gen, changed: changedCount, ok: res.ok, out: res.out, err: res.err || '', code: latin1(S.bytes), t: new Date().toISOString() });
-    setState(changedCount ? `${changedCount} byte${changedCount > 1 ? 's' : ''} rewritten by the room` : 'came back unchanged');
+    setState(changedCount ? `${changedCount} character${changedCount > 1 ? 's' : ''} changed` : 'no change');
 
     if (S.stopAfter) break;
     await wait(600);
   }
   S.running = false;
   $('startBtn').disabled = !S.bytes; $('stopBtn').disabled = true; $('resetBtn').disabled = false;
-  if (S.bytes) $('startBtn').textContent = 'continue';
+  if (S.bytes) $('startBtn').textContent = 'Continue';
 }
 
 $('startBtn').onclick = start;
 $('stopBtn').onclick = () => { S.stopAfter = true; setState('stopping after this pass'); };
 $('resetBtn').onclick = () => {
   S.bytes = null; S.gen = 0; S.ever.clear();
-  $('seed').disabled = false; $('startBtn').disabled = false; $('startBtn').textContent = 'start';
-  $('gen').textContent = 'generation —'; setState('idle'); $('code').textContent = ''; $('out').textContent = '';
+  $('seed').disabled = false; $('startBtn').disabled = false; $('startBtn').textContent = 'Start';
+  $('gen').textContent = 'Pass —'; setState('idle'); $('code').textContent = ''; $('out').textContent = '';
 };
 $('dlBtn').onclick = () => {
   const text = S.log.map(e => e.lost
-    ? `#${e.gen}  ${e.t}\n${e.lost}\n`
-    : `#${e.gen}  ${e.t}  changed ${e.changed}  ${e.ok ? 'runs' : 'does not run'}\n${e.code}\n> ${e.ok ? e.out.join('\n> ') : e.err}\n`).join('\n');
+    ? `Pass ${e.gen}  ${e.t}\n${e.lost}\n`
+    : `Pass ${e.gen}  ${e.t}  changed ${e.changed}  ${e.ok ? 'runs' : 'does not run'}\n${e.code}\n> ${e.ok ? e.out.join('\n> ') : e.err}\n`).join('\n');
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
-  a.download = `room-memory-${new Date().toISOString().slice(0, 19)}.txt`; a.click();
+  a.download = `telephone-log-${new Date().toISOString().slice(0, 19)}.txt`; a.click();
 };
 
 // ---------- spectrogram ----------

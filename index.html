@@ -3,66 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>the room is the memory</title>
+<title>Telephone</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav><a href="./">the piece</a> · <a href="proposal.html">proposal</a></nav>
 <header>
-  <h1>the room is the memory</h1>
-  <p>This program has no storage. Between runs, its source code exists only as sound in the air between a speaker and a microphone. Each pass, it is heard, run, and played back into the room. Whatever the room does to it on the way is kept.</p>
-  <p class="try"><b>To try it:</b> turn your sound on, leave "simulated room" selected, and press <b>start</b>. Each pass takes about 10 seconds. Letters the room changed turn black. Try moving the distance slider, or edit the code before starting.</p>
+  <h1>Telephone</h1>
+  <p>A short program is sent across a room as sound, decoded, run, and sent again. It is never saved, so anything the microphone mishears changes the code.</p>
+  <p class="try"><b>To try it:</b> turn your sound on and press <b>Start</b>. Each pass takes about 5 seconds. Changed characters are highlighted in black.</p>
 </header>
 
 <section class="controls">
   <fieldset>
-    <legend>room</legend>
-    <label><input type="radio" name="mode" value="sim" checked> simulated room</label>
-    <label><input type="radio" name="mode" value="real"> this room (real speaker → real mic)</label>
+    <legend>Mode</legend>
+    <label><input type="radio" name="mode" value="sim" checked> Simulated room</label>
+    <label><input type="radio" name="mode" value="real"> Real room (speaker and a separate microphone)</label>
     <div id="realOpts" hidden>
-      <label>microphone <select id="micSel"><option value="">default</option></select></label>
-      <label>volume <input id="vol" type="range" min="5" max="100" value="40"> <span id="volVal">40</span></label>
-      <p class="hint">For the room to have any say, put the mic (a phone, USB or Bluetooth mic) a few metres from the speaker. Right next to each other, the code survives untouched.</p>
+      <label>Microphone <select id="micSel"><option value="">default</option></select></label>
+      <label>Volume <input id="vol" type="range" min="5" max="100" value="40"> <span id="volVal">40</span></label>
+      <p class="hint">Place the microphone a few metres from the speaker. If they're close together, the code won't change.</p>
     </div>
     <div id="simOpts">
-      <label>distance <input id="dist" type="range" min="0.3" max="8" step="0.1" value="3"> <span id="distVal">3.0</span> m</label>
-      <label>reverb (rt60) <input id="rt60" type="range" min="0.1" max="1.5" step="0.05" value="0.7"> <span id="rt60Val">0.70</span> s</label>
-      <label>people talking <input id="talk" type="range" min="0" max="3" step="0.5" value="1"> <span id="talkVal">1</span></label>
+      <label>Distance <input id="dist" type="range" min="0.3" max="8" step="0.1" value="3.5"> <span id="distVal">3.5</span> m</label>
+      <label>Echo (RT60) <input id="rt60" type="range" min="0.1" max="1.5" step="0.05" value="0.7"> <span id="rt60Val">0.70</span> s</label>
+      <label>People talking <input id="talk" type="range" min="0" max="3" step="0.5" value="1"> <span id="talkVal">1</span></label>
     </div>
   </fieldset>
   <fieldset>
-    <legend>signal</legend>
-    <label>symbol length <input id="sym" type="range" min="10" max="60" value="40"> <span id="symVal">40</span> ms</label>
-    <p class="hint">Longer symbols are slower and harder for the room to change.</p>
+    <legend>Settings</legend>
+    <label>Tone length <input id="sym" type="range" min="10" max="60" value="40"> <span id="symVal">40</span> ms</label>
+    <p class="hint">Longer tones are slower but harder to mishear.</p>
   </fieldset>
   <fieldset class="seedbox">
-    <legend>generation 0 (edit before starting)</legend>
-    <textarea id="seed" spellcheck="false" rows="3"></textarea>
-    <p class="hint"><span id="seedInfo"></span> · ASCII only, max 255 bytes · <code>say(...)</code> prints</p>
+    <legend>Starting code</legend>
+    <textarea id="seed" spellcheck="false" rows="2"></textarea>
+    <p class="hint"><span id="seedInfo"></span> · JavaScript, ASCII only · <code>say()</code> prints a line</p>
   </fieldset>
   <div class="buttons">
-    <button id="startBtn">start</button>
-    <button id="stopBtn" disabled>stop after this pass</button>
-    <button id="resetBtn">reset to generation 0</button>
-    <button id="dlBtn" disabled>download log</button>
+    <button id="startBtn">Start</button>
+    <button id="stopBtn" disabled>Stop after this pass</button>
+    <button id="resetBtn">Reset</button>
+    <button id="dlBtn" disabled>Download log</button>
   </div>
 </section>
 
 <section class="now">
-  <div class="genline"><span id="gen">generation —</span> <span id="state">idle</span></div>
+  <div class="genline"><span id="gen">Pass —</span> <span id="state">idle</span></div>
   <pre id="code" class="code"></pre>
-  <div class="outlabel">output</div>
+  <div class="outlabel">Output</div>
   <pre id="out" class="out"></pre>
 </section>
 
 <section>
-  <div class="outlabel">what the microphone hears, 1–4.5 kHz</div>
+  <div class="outlabel">Microphone input, 1–4.5 kHz</div>
   <canvas id="spec" height="180"></canvas>
 </section>
 
 <section>
-  <div class="outlabel">log</div>
-  <table id="log"><thead><tr><th>gen</th><th>bytes changed</th><th>runs?</th><th>output</th></tr></thead><tbody></tbody></table>
+  <div class="outlabel">Log</div>
+  <table id="log"><thead><tr><th>Pass</th><th>Characters changed</th><th>Runs?</th><th>Output</th></tr></thead><tbody></tbody></table>
 </section>
 
 <script type="module" src="app.js"></script>
